@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
-import { useAuth0 } from "@auth0/auth0-react";
+import { User } from "@/types";
 
 const formSchema = z.object({
   email: z.string().optional(), //this is a readonly field
@@ -23,7 +23,7 @@ const formSchema = z.object({
   addressLine1: z
     .string()
     .min(1, "AddressLine1 is required.")
-    .max(20, "Address should not exceed 20 character."),
+    .max(30, "Address should not exceed 30 character."),
   city: z
     .string()
     .min(1, "City is required.")
@@ -37,14 +37,15 @@ const formSchema = z.object({
 type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
+  currentUser: User;
   onSubmit: (userProfileData: UserFormData) => void;
   isLoading: boolean;
 };
 
-const UserProfileForm = ({ onSubmit, isLoading }: Props) => {
-  const {user} = useAuth0();
+const UserProfileForm = ({ currentUser, onSubmit, isLoading }: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: currentUser
   });
 
   return (
@@ -66,7 +67,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: Props) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} disabled className="bg-white" defaultValue={user?.email} />
+                <Input {...field} disabled className="bg-white" />
               </FormControl>
             </FormItem>
           )}
