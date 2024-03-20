@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const formSchema = z.object({
   email: z.string().optional(), //this is a readonly field
@@ -41,6 +42,7 @@ type Props = {
 };
 
 const UserProfileForm = ({ onSubmit, isLoading }: Props) => {
+  const {user} = useAuth0();
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
   });
@@ -64,7 +66,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: Props) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} disabled className="bg-white" />
+                <Input {...field} disabled className="bg-white" defaultValue={user?.email} />
               </FormControl>
             </FormItem>
           )}
