@@ -3,18 +3,24 @@ import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const MobileNavLinks = () => {
-    const {logout} = useAuth0();
+  const { logout } = useAuth0();
 
-    return (
-        <>
-        <Link to="/user-profile" className="text-center font-bold hover:text-orange-500 bg-white">
-            User Profile    
-        </Link>
-        <Button onClick={()=>logout()} className="px-3 font-bold text-center hover:bg-orange-500">
-            Log Out
-        </Button>    
-        </>
-    );
+  return (
+    <>
+      <Link
+        to="/user-profile"
+        className="text-center font-bold hover:text-orange-500 bg-white">
+        User Profile
+      </Link>
+      <Button
+        onClick={() =>
+          logout({ logoutParams: { returnTo: import.meta.env.VITE_API_BASE_URL } })
+        }
+        className="px-3 font-bold text-center hover:bg-orange-500">
+        Log Out
+      </Button>
+    </>
+  );
 };
 
 export default MobileNavLinks;
