@@ -6,6 +6,9 @@ import DetailsSection from "./DetailsSection";
 import { Separator } from "@/components/ui/separator";
 import CuisinesSection from "./CuisinesSection";
 import MenuSection from "./MenuSection";
+import ImageSection from "./ImageSection";
+import LoadingButton from "@/components/LoadingButton";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   restaurantName: z.string({
@@ -61,10 +64,13 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 p-10 bg-gray-100 rounded-lg">
         <DetailsSection />
-        <Separator/>
-        <CuisinesSection/>
-        <Separator/>
-        <MenuSection/>
+        <Separator />
+        <CuisinesSection />
+        <Separator />
+        <MenuSection />
+        <Separator />
+        <ImageSection />
+        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
       </form>
     </Form>
   );
