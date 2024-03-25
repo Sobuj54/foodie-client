@@ -20,8 +20,10 @@ const UserNameMenu = () => {
         {user?.name}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-      <DropdownMenuItem>
-          <Link to="/manage-restaurant" className="font-bold hover:text-orange-500 ">
+        <DropdownMenuItem>
+          <Link
+            to="/manage-restaurant"
+            className="font-bold hover:text-orange-500 ">
             Manage Restaurant
           </Link>
         </DropdownMenuItem>
@@ -35,7 +37,11 @@ const UserNameMenu = () => {
           <Button
             className="w-full font-bold bg-orange-500"
             onClick={() =>
-              logout({ logoutParams: { returnTo: import.meta.env.VITE_API_BASE_URL } })
+              logout({
+                logoutParams: {
+                  returnTo: import.meta.env.VITE_AUTH0_REDIRECT_URI,
+                },
+              })
             }>
             Log Out
           </Button>
