@@ -13,13 +13,15 @@ export const useCreateMyRestaurant = () => {
   ): Promise<Restaurant> => {
     const accessToken = await getAccessTokenSilently();
 
-    const res = await fetch(`${API_BASE_URL}/api/v1/restaurant/create`, {
+    const res = await fetch(`${API_BASE_URL}/api/v1/restaurant/create-restaurant`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
       },
       body: restaurantFormData,
     });
+
+    console.log("res :", res);
     if (!res.ok) {
       throw new Error("Failed to create restaurant.");
     }
@@ -29,7 +31,7 @@ export const useCreateMyRestaurant = () => {
 
   const {
     mutate: createRestaurant,
-    isLoading,
+    isPending,
     isSuccess,
     error,
   } = useMutation({ mutationFn: createMyRestaurantRequest });
@@ -39,8 +41,8 @@ export const useCreateMyRestaurant = () => {
   }
 
   if (error) {
-    toast.error("Unable to create restaurant.");
+    toast.error(error.toString());
   }
 
-  return { createRestaurant, isLoading };
+  return { createRestaurant, isPending };
 };

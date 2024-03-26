@@ -83,7 +83,7 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
       );
     });
     formData.append("image", formDataJson.image);
-
+    console.log(formData);
     onSave(formData);
   };
 
@@ -99,7 +99,13 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
         <MenuSection />
         <Separator />
         <ImageSection />
-        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button type="submit" className="bg-orange-500">
+            Submit
+          </Button>
+        )}
       </form>
     </Form>
   );

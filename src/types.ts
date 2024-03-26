@@ -25,7 +25,7 @@ export type Restaurant = {
     cuisines: string[];
     menuItems: MenuItem[];
     imageUrl: string;
-    updatedAt: string;
-    createdAt: string;
+    updatedAt: Date;
+    createdAt: Date;
   };
   
