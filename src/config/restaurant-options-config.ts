@@ -25,4 +25,8 @@ export const cuisineList = [
     "Tacos",
     "Tapas",
     "Vegan",
+    "Kacchi",
+    "Beef Khichuri",
+    "Bangladeshi",
+    "Nun Chicken"
   ];

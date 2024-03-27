@@ -68,10 +68,49 @@ export const useGetMyRestaurant = () => {
     return res.json();
   };
 
-  const { data: restaurant, isLoading  } = useQuery({
+  const { data: restaurant, isLoading } = useQuery({
     queryKey: ["myRestaurant"],
     queryFn: getMyRestaurantRequest,
   });
 
   return { restaurant, isLoading };
+};
+
+export const useUpdateMyRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateRestaurantRequest = async (
+    restaurantFormData: FormData
+  ): Promise<Restaurant> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const res = await fetch(`${API_BASE_URL}/api/v1/restaurant`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: restaurantFormData,
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update restaurant");
+    }
+    return res.json();
+  };
+
+  const {
+    mutate: updateRestaurant,
+    isPending,
+    isSuccess,
+    error,
+  } = useMutation({ mutationFn: updateRestaurantRequest });
+
+  if (isSuccess) {
+    toast.success("Restaurant updated successfully.");
+  }
+  if (error) {
+    toast.error(error.toString());
+  }
+
+  return { updateRestaurant, isPending };
 };
