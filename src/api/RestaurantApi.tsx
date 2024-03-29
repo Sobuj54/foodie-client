@@ -1,4 +1,4 @@
-import { Restaurant } from "@/types";
+import { Restaurant, RestaurantSearchResponse } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -113,4 +113,22 @@ export const useUpdateMyRestaurant = () => {
   }
 
   return { updateRestaurant, isPending };
+};
+
+export const useSearchRestaurants = (city?: string) => {
+  const searchRequest = async (): Promise<RestaurantSearchResponse> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/restaurant/search/${city}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch restaurant");
+    }
+    return res.json();
+  };
+
+  const { data: results, isLoading } = useQuery({
+    queryKey: ["searchRestaurants", city],
+    queryFn: searchRequest,
+    enabled: !!city,
+  });
+
+  return { results, isLoading };
 };
