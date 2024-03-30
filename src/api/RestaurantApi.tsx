@@ -1,3 +1,4 @@
+import { SearchState } from "@/Pages/SearchPage";
 import { Restaurant, RestaurantSearchResponse } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -115,9 +116,18 @@ export const useUpdateMyRestaurant = () => {
   return { updateRestaurant, isPending };
 };
 
-export const useSearchRestaurants = (city?: string) => {
+export const useSearchRestaurants = (
+  searchState: SearchState,
+  city?: string
+) => {
   const searchRequest = async (): Promise<RestaurantSearchResponse> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/restaurant/search/${city}`);
+    const params = new URLSearchParams();
+    params.set("searchQuery", searchState.searchQuery);
+    console.log(params.toString());
+
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/restaurant/search/${city}?${params.toString()}`
+    );
     if (!res.ok) {
       throw new Error("Failed to fetch restaurant");
     }
@@ -125,7 +135,7 @@ export const useSearchRestaurants = (city?: string) => {
   };
 
   const { data: results, isLoading } = useQuery({
-    queryKey: ["searchRestaurants", city],
+    queryKey: ["searchRestaurants", searchState],
     queryFn: searchRequest,
     enabled: !!city,
   });

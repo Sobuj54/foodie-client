@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   searchQuery: z.string({
@@ -18,15 +19,20 @@ type Props = {
   onSubmit: (formData: SearchForm) => void;
   placeHolder: string;
   onReset?: () => void;
+  searchQuery?: string;
 };
 
-const SearchBar = ({ onSubmit, placeHolder, onReset }: Props) => {
+const SearchBar = ({ onSubmit, placeHolder, onReset, searchQuery }: Props) => {
   const form = useForm<SearchForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      searchQuery: "",
+      searchQuery,
     },
   });
+
+  useEffect(() => {
+    form.reset({ searchQuery });
+  }, [searchQuery, form]);
 
   const handleReset = () => {
     form.reset({
@@ -41,13 +47,13 @@ const SearchBar = ({ onSubmit, placeHolder, onReset }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`flex flex-1 items-center gap-3 justify-between flex-row border-2 rounded-full p-3 mx-5 ${
+        className={`flex flex-1 items-center gap-3 justify-between flex-row border-2 rounded-full p-3 ${
           form.formState.errors.searchQuery && "border-red-500"
         }`}>
         <Search
           strokeWidth={2.5}
           size={20}
-          className="ml-1 text-orange-500 hidden md:block"
+          className="hidden ml-1 text-orange-500 md:block"
         />
         <FormField
           control={form.control}
@@ -57,7 +63,7 @@ const SearchBar = ({ onSubmit, placeHolder, onReset }: Props) => {
               <FormControl>
                 <Input
                   {...field}
-                  className="border-none shadow-none text-xl focus-visible:ring-0"
+                  className="text-xl border-none shadow-none focus-visible:ring-0"
                   placeholder={placeHolder}
                 />
               </FormControl>
@@ -65,17 +71,15 @@ const SearchBar = ({ onSubmit, placeHolder, onReset }: Props) => {
           )}
         />
 
-        {form.formState.isDirty && (
-          <Button
-            type="button"
-            variant="outline"
-            className="rounded-full"
-            onClick={handleReset}>
-            Clear
-          </Button>
-        )}
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-full"
+          onClick={handleReset}>
+          Reset
+        </Button>
 
-        <Button type="submit" className="rounded-full bg-orange-500">
+        <Button type="submit" className="bg-orange-500 rounded-full">
           Search
         </Button>
       </form>
