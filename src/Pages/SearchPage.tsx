@@ -20,11 +20,11 @@ const SearchPage = () => {
   const { results, isLoading } = useSearchRestaurants(searchState, city);
 
   const setPage = (page: number) => {
+    console.log(typeof page);
     setSearchState((prevState) => ({
       ...prevState,
       page,
     }));
-    console.log(page);
   };
 
   const setSearchQuery = (searchFromData: SearchForm) => {
@@ -51,6 +51,9 @@ const SearchPage = () => {
     return <span>No Results Found!</span>;
   }
 
+  const pages = parseInt(results.pagination.pages);
+  const page = parseInt(results.pagination.page);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
       <div id="cuisines-list">insert cuisines here</div>
@@ -67,8 +70,8 @@ const SearchPage = () => {
           <SearchResultCard restaurant={restaurant} key={restaurant._id} />
         ))}
         <PaginationSelector
-          page={results.pagination.page}
-          pages={results.pagination.pages}
+          page={page}
+          pages={pages}
           onPageChange={setPage}
         />
       </div>
